@@ -16,6 +16,8 @@ tmp
 _yardoc
 doc/
 
+test_config.xml  #config used for automated tests create this by hand - see spec_helper for example
+
 #.ideas is from RubyMine
 .idea
 *.iml
