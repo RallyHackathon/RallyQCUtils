@@ -13,7 +13,7 @@ describe 'QC Connection tests' do
     }
     qc = RallyQCUtils::QCConnection.new(qc_config)
     qc_data = qc.gather_qc_info
-    #puts qc_data
+    puts qc_data
     qc_data.length.should > 0
   end
 

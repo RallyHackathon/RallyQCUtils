@@ -17,7 +17,7 @@ module RallyQCUtils
       @qc_password  = config[:qc_password]
       @artifact_type = config[:artifact_type]
       @qc_client = HTTPClient.new
-      @qc_client.debug_dev= STDOUT
+      #@qc_client.debug_dev= STDOUT
 
       @xml_parser = Nori.new(:parser => :nokogiri)
     end
@@ -53,13 +53,28 @@ module RallyQCUtils
     def get_projects(domain)
       qc_response = send_request("#{@qc_url.to_s}/rest/domains/#{domain.to_s}/projects", {:method => :get})
       projects = []
-      puts "projects is #{qc_response}"
+      #puts "projects is #{qc_response}"
       qc_response["Projects"]["Project"].each do |project|
-        projects.push({:name => project["@Name"]})
+        proj_name = project["@Name"]
+        fields = get_fields_for(@artifact_type, domain, proj_name)
+        projects.push({:name => proj_name, :fields => fields})
       end
       projects
     end
 
+
+    #/qcbin/rest/domains/{domain}/projects/{project}/customization/entities/{entity name}/fields
+    def get_fields_for(type, domain, project)
+      qc_type = check_type(type)
+      fields_url = "#{base_url_domain_proj(domain, project)}/customization/entities/#{qc_type}/fields"
+      resp = send_request(fields_url)
+      #puts "get_fields_for has #{resp}"
+      fields = []
+      resp["Fields"]["Field"].each do |field_info|
+        fields.push({:label => field_info["@Label"], :name => field_info["@PhysicalName"]})
+      end
+      fields
+    end
 
     #===================================================================================
 
@@ -174,6 +189,30 @@ module RallyQCUtils
 
 
     private
+
+    #this should really read the entities endpoint - for now hard coding
+    #def read_entities
+    #  entities_url = "#{base_url_domain_proj}/customization/entities"
+    #  entities_resp = @qc_rest.send_request(entities_url, {:method => :get})
+    #  puts "looking for entities at #{entities_resp}"
+    #  qc_entities = entities_resp["EntityDescriptors"]["EntityDescriptor"]
+    #  qc_entities.each do |qc_entity|
+    #    entity_name = qc_entity["Name"]
+    #    @entities[entity_name] = qc_entity
+    #  end
+    #  @entities
+    #end
+
+    QC_ENTITIES= {
+        "REQ" => "requirement",
+        "requirement" => "requirement",
+        "BUG" => "defect",
+        "defect" => "defect"
+    }
+
+    def check_type(type)
+      QC_ENTITIES[type]
+    end
 
     #qc rest api expects user:password base64 encoded in header
     def make_auth_string
