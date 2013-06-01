@@ -27,7 +27,12 @@ module RallyQCUtils
   #    'Description'  => 'RQ_REQ_COMMENT',
   #    'Priority'     => 'RQ_REQ_PRIORITY'
   #}
-
+  #rally_fh = {
+  #
+  # }
+  #other_fh = {}
+  #
+  #runner ={}
 
 
 
@@ -53,11 +58,16 @@ module RallyQCUtils
       rally_xml = construct_rally_xml(data[:rally])
       qc_xml    = construct_qc_xml(data[:qc])
       fields_xml= construct_field_mapping_xml(data[:fields])
+
       file_contents = "<?xml version=\"1.0\"?>\n<Config>\n"
       file_contents << rally_xml << "\n\n"
       file_contents << qc_xml
-      file_contents << "\n\n<Connector>\n#{fields_xml}\n</Connector>\n"
-      file_contents << "\n#{CONN_RUNNER}\n</Config>\n"
+
+      file_contents << "\n\n<Connector>\n#{fields_xml}\n\n"
+      file_contents << "  #{data[:rally_fh]}\n\n  #{data[:other_fh]}\n\n"
+      file_contents << "</Connector>\n"
+
+      file_contents << "\n  #{data[:runner]}\n</Config>\n"
       file_contents
     end
 
@@ -110,7 +120,6 @@ module RallyQCUtils
       #puts "field mapping xml is:\n#{return_xml}\n\n"
       return_xml
     end
-
 
   end
 

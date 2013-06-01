@@ -10,5 +10,5 @@ begin
   util = RallyQCUtils::RallyQCUtil.new(ARGV)
   util.run  #if util.ready_to_run
 rescue Exception => ex
-  puts ex
+  puts ex, ex.backtrace.join("\n")
 end

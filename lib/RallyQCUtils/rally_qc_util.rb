@@ -14,7 +14,8 @@ module RallyQCUtils
         when "--generate"
           @spreadsheet_name = args[1]
           config_name       = args[2]    #todo check file exists?
-          @config = RallyQCUtils.load_config(config_name)
+          @config     = RallyQCUtils.load_config(config_name)
+          @config_xml = RallyQCUtils.load_config_xml(config_name)
           @location         = args[3]
       end
 
@@ -84,6 +85,7 @@ module RallyQCUtils
       configs.each do |config|
         add_rally_to_config(config[:rally])
         add_qc_to_config(config[:qc])
+        config.merge!(grab_extra_config)
         file_name = "#{config[:qc]['Domain']}_#{config[:qc]['Project']}_#{config[:qc]['ArtifactType']}.xml"
         file_with_path = @location + "/" + file_name
         config_writer.write_config_file(file_with_path, config)
@@ -103,6 +105,13 @@ module RallyQCUtils
       config['User']            = @config["QCConnection"]["User"]
       config['Password']        = @config["QCConnection"]["Password"]
       config['ArtifactType']    = @config["QCConnection"]["ArtifactType"]
+    end
+
+    def grab_extra_config()
+      rally_fh = @config_xml.xpath("/Config/Connector/RallyFieldHandlers").to_xml
+      other_fh = @config_xml.xpath("/Config/Connector/OtherFieldHandlers").to_xml
+      conn_runner = @config_xml.xpath("/Config/ConnectorRunner").to_xml
+      return {:rally_fh => rally_fh, :other_fh => other_fh, :runner => conn_runner}
     end
 
     def get_rally_info(config_hash)
@@ -126,6 +135,12 @@ module RallyQCUtils
   end
 
 
+  def self.load_config_xml(config_name)
+    return nil if config_name.is_a?(Hash)
+    config = File.read(config_name)
+    doc = Nokogiri::XML(config)
+    doc.root
+  end
 
   def self.load_config(config_name)
     return config_name if config_name.is_a?(Hash)

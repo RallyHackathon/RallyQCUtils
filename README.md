@@ -19,6 +19,8 @@ An example spreadsheet would look roughly like:
     AUTOMATED_TESTS, DynamicTests, Quality Center Workspace, Project 1, Description, ScheduleState, Name, ObjectID, FormattedID
     AUTOMATED_TESTS, LoadTests, Quality Center Workspace, Project 2, Description, ScheduleState, Name, ObjectID, FormattedID
 
+Will automatically populate the generated config files with the content of the ConnectorRunner RallyFieldHandlers
+and OtherFieldHandlers contained in the default config.xml file
 
 System Requirements:
 Currently uses Python 2.6 to generate an xlsx file with xlrd and xlwt which can be downloaded from pypi
@@ -48,7 +50,8 @@ To create a template spreadsheet:
 
     rallyqc --create spreadsheetname config.xml
 
-To generate config files from a spreadsheet and writing to a "location" directory:
+To generate config files from a spreadsheet, include custom content from config.xml,
+and writing to a "location" directory:
 
     rallyqc --generate spreadsheet config.xml location
 
