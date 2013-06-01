@@ -41,7 +41,7 @@ module RallyQCUtils
         formatted_id_found = false
         row[6..row.length].each_with_index do |rally_field, index|
           next if rally_field.nil?
-          qc_field = @headers[index]
+          qc_field = @headers[index+8]
           if (rally_field == "FormattedID")
             formatted_id_found = true
             qc_info['ExternalEndUserIDField'] = qc_field
