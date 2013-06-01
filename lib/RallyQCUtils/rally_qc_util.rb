@@ -27,6 +27,8 @@ module RallyQCUtils
           #write rally data to spreadsheet
           excel_writer = RallyQCUtils::ExcelWriter.new(@spreadsheet_name)
           excel_writer.write("Rally", rally_data)
+          puts "closing file"
+          excel_writer.close_file
           #connect to qc and get domain project and field info
           #write qc data to spreadsheet
         when "--generate"
