@@ -1,6 +1,7 @@
 
 import xlwt
 import sys
+import os
 
 class ExcelWriter(object):
     def __init__(self,file_name):
@@ -24,7 +25,8 @@ class ExcelWriter(object):
                self.write_cell(self.sheet3,{"row" : row_num, "column" : col_count}, cellval)
     
     def close_file(self):
-        self.book.save(self.file_name)
+        cwd = os.getcwd()
+        self.book.save(cwd + "/" + self.file_name)
     
     def write(self,sheetname, data):
         if sheetname == "Rally":
