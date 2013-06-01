@@ -78,7 +78,7 @@ module RallyQCUtils
         }
       end
       return_xml = builder.doc.root.to_xml
-      puts "rally xml is:\n#{return_xml}\n\n"
+      #puts "rally xml is:\n#{return_xml}\n\n"
       return_xml
     end
 
@@ -91,7 +91,7 @@ module RallyQCUtils
         }
       end
       return_xml = builder.doc.root.to_xml
-      puts "qc xml is:\n#{return_xml}\n\n"
+      #puts "qc xml is:\n#{return_xml}\n\n"
       return_xml
     end
 
@@ -107,7 +107,7 @@ module RallyQCUtils
         }
       end
       return_xml = builder.doc.root.to_xml
-      puts "field mapping xml is:\n#{return_xml}\n\n"
+      #puts "field mapping xml is:\n#{return_xml}\n\n"
       return_xml
     end
 

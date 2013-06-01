@@ -83,7 +83,7 @@ module RallyQCUtils
         add_rally_to_config(config[:rally])
         add_qc_to_config(config[:qc])
         file_name = "#{config[:qc]['Domain']}_#{config[:qc]['Project']}_#{config[:qc]['ArtifactType']}.xml"
-        file_with_path = @location << "/" << file_name
+        file_with_path = @location + "/" + file_name
         config_writer.write_config_file(file_with_path, config)
       end
     end

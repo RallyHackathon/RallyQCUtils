@@ -29,6 +29,7 @@ module RallyQCUtils
 
     def gather_info
       configs = []
+      read_rows()
       @data.each do |row|
         #gather_rally
         rally_info = { 'WorkspaceName' => row[2], 'Projects' => [row[4]] }
@@ -38,8 +39,8 @@ module RallyQCUtils
         fields = {}
         object_id_found   = false
         formatted_id_found = false
-        row(6..row.length).each_with_index do |rally_field, index|
-          next if rally_field.empty?
+        row[6..row.length].each_with_index do |rally_field, index|
+          next if rally_field.nil?
           qc_field = @headers[index]
           if (rally_field == "FormattedID")
             formatted_id_found = true
@@ -66,7 +67,7 @@ module RallyQCUtils
 
         configs.push({:rally => rally_info, :qc => qc_info, :fields => fields})
       end
-
+      return configs
     end
 
   end
