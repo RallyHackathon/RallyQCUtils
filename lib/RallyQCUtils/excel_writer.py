@@ -5,7 +5,7 @@ import sys
 class ExcelWriter(object):
     def __init__(self,file_name):
         self.file_name = file_name+".xlsx"
-        self.current_row = {"Data" : 1, "Rally" : 1, "HPQC" : 1}
+        self.current_row = {"Data" : 0, "Rally" : 0, "HPQC" : 0}
         self.create_file()
         
     def add_row(self,sheetname, row_data):
@@ -13,7 +13,8 @@ class ExcelWriter(object):
         self.write_row(sheetname,self.current_row[sheetname], row_data)
     
     def write_row(self, sheetname, row_num, row_data):
-        col_count = 0
+        col_count = -1
+        print ("row_data=" + str(row_data))
         for cellval in row_data:
             col_count += 1
             if sheetname == "Data":
@@ -24,12 +25,16 @@ class ExcelWriter(object):
                self.write_cell(self.sheet3,{"row" : row_num, "column" : col_count}, cellval)
     
     def close_file(self):
+        print("save book as " + self.file_name + "\n")
         self.book.save(self.file_name)
+        print (str(self.book))
     
     def write(self,sheetname, data):
         if sheetname == "Rally":
             self.add_row("Rally",["workspace name", "workspace id", "project name", "project id"])
+            print "first list item=" + str(data[0])
             for values in data:
+                print values
                 workspace_name = values["name"]
                 workspace_id = values["id"]
                 for project in values["projects"]:
@@ -54,9 +59,10 @@ class ExcelWriter(object):
         
 def main():
     filename = sys.argv[1]
-    rally_data = eval(sys.argv[2])
-    hpqc_data= eval(sys.argv[3])
-    data_data = eval(sys.argv[4])
+    rally_data = eval(eval(sys.argv[2]))
+    hpqc_data= eval(eval(sys.argv[3]))
+    data_data = eval(eval(sys.argv[4]))
+    print ("length of data data = " + str(len(data_data)))
     excel = ExcelWriter(filename)
     excel.write("Rally",rally_data)
     excel.write("HPQC",hpqc_data)

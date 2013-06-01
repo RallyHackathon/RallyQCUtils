@@ -41,8 +41,12 @@ module RallyQCUtils
   <Services>COPY_RALLY_TO_QC, UPDATE_QC_TO_RALLY</Services>
 </ConnectorRunner>"
 
-    def initialize(file_options)
-      @file_name = file_options[:file_name]
+    def initialize()
+    end
+
+    def write_config_file(file_name_with_path, data)
+      file_contents = gen_file(data)
+      File.open(file_name_with_path, "wb") {|f| f.write(file_contents) }
     end
 
     def gen_file(data)
