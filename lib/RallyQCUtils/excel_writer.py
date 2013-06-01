@@ -37,7 +37,7 @@ class ExcelWriter(object):
         elif sheetname== "HPQC":
             # write header row
             header_row = ["domain","project"]
-            self.add_row(header_row)
+            self.add_row("HPQC",header_row)
             for values in data:
                 self.add_row("HPQC",values[0:2])
         elif sheetname == "Data":
@@ -60,6 +60,8 @@ def main():
     excel = ExcelWriter(filename)
     excel.write("Rally",rally_data)
     excel.write("HPQC",hpqc_data)
+    excel.write("Data",data_data)
+    
     excel.close_file()
     
 if __name__ == '__main__':
