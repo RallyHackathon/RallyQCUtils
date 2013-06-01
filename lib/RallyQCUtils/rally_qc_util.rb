@@ -93,7 +93,7 @@ module RallyQCUtils
       config['User']            = @config["RallyConnection"]["User"]
       config['Password']        = @config["RallyConnection"]["Password"]
       config['ArtifactType']    = @config["RallyConnection"]["ArtifactType"]
-      config['ExternalIDField'] = @config["RallyConnection"]["ExternalFieldID"]
+      config['ExternalIDField'] = @config["RallyConnection"]["ExternalIDField"]
     end
 
     def add_qc_to_config(config)

@@ -25,6 +25,9 @@ def main():
            elif cell_type ==1:
                row_is_empty = False
                row_array.append(str(cell_value))
+           elif cell_type > 1:
+               row_is_empty = False
+               row_array.append(str(int(cell_value)))
        if not row_is_empty:
            f.write( ",".join(row_array)+"\n")
 if __name__ == '__main__':

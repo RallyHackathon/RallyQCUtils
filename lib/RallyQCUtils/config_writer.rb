@@ -78,7 +78,7 @@ module RallyQCUtils
         }
       end
       return_xml = builder.doc.root.to_xml
-      #puts "rally xml is:\n#{return_xml}\n\n"
+      puts "rally xml is:\n#{return_xml}\n\n"
       return_xml
     end
 

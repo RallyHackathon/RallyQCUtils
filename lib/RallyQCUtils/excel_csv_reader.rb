@@ -32,7 +32,7 @@ module RallyQCUtils
       read_rows()
       @data.each do |row|
         #gather_rally
-        rally_info = { 'WorkspaceName' => row[2], 'Projects' => [row[4]] }
+        rally_info = { 'WorkspaceName' => row[2], 'Projects' => [ row[4] ] }
         #gather_qc
         qc_info = { 'Domain' => row[0], 'Project' => row[1] }
         #gather_fields
@@ -41,7 +41,7 @@ module RallyQCUtils
         formatted_id_found = false
         row[6..row.length].each_with_index do |rally_field, index|
           next if rally_field.nil?
-          qc_field = @headers[index+8]
+          qc_field = @headers[index+6]
           if (rally_field == "FormattedID")
             formatted_id_found = true
             qc_info['ExternalEndUserIDField'] = qc_field
