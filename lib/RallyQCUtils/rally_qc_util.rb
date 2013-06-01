@@ -53,7 +53,7 @@ module RallyQCUtils
           rally_data = rally.gather_config_info
           # data sheet is just the first row of the qc_data replacing the first
           # two cells
-          data_data = ["project","domain"].concat(qc_data[0].slice(2,qc_data[0].size))
+          data_data = ["QC Domain","Project","Rally Workspace", "Rally Workspace ID","Rally Project", "Rally Project ID"].concat(qc_data[0].slice(2,qc_data[0].size))
           #write data to spreadsheet
           spawn("python","excel_writer.py","\"" + str(rally_data) + "\"",
             "\"" + str(hpqc_data) + "\"", + "\"" + str(data_data) + "\"")
