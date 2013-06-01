@@ -1,5 +1,36 @@
 module RallyQCUtils
 
+  #expects the following
+  #rally_info = {
+  #    'Url'             => "rally1.rallydev.com",
+  #    'WorkspaceName'   => "Test",
+  #    'Projects'        => [ "Project1" ],
+  #    'User'            => "user@company.com",
+  #    'Password'        => "apassword",
+  #    'ArtifactType'    => "Story",
+  #    'ExternalIDField' => "QCID"
+  #}
+  #
+  #qc_info = {
+  #    'Url'                     => "vmqc11:8080",
+  #    'Domain'                  => "DomainTest",
+  #    'Project'                 => "QCProject1",
+  #    'User'                    => "user@company.com",
+  #    'Password'                => "apassword",
+  #    'ArtifactType'            => "REQ",
+  #    'ExternalIDField'         => "RQ_USER_01",
+  #    'ExternalEndUserIDField'  => "RQ_USER_02"
+  #}
+  #
+  #fields = {
+  #    'Name'         => "RQ_REQ_NAME",
+  #    'Description'  => 'RQ_REQ_COMMENT',
+  #    'Priority'     => 'RQ_REQ_PRIORITY'
+  #}
+
+
+
+
   class ConfigWriter
 
     RALLY_ELEMENTS = %w(Url WorkspaceName Projects User Password ArtifactType ExternalIDField)
@@ -63,7 +94,7 @@ module RallyQCUtils
     def construct_field_mapping_xml(fields_hash)
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.FieldMapping() {
-          fields_hash.each do |qc_field, rally_field|
+          fields_hash.each do |rally_field, qc_field|
             xml.Field {
               xml.Rally rally_field
               xml.Other qc_field
@@ -73,22 +104,6 @@ module RallyQCUtils
       end
       return_xml = builder.doc.root.to_xml
       puts "field mapping xml is:\n#{return_xml}\n\n"
-      return_xml
-    end
-
-
-    def entity_to_xml(type, hash_fields)
-      builder = Nokogiri::XML::Builder.new do |xml|
-        xml.Entity(:Type => type) {
-          xml.Fields{
-            hash_fields.each do |field_name, value|
-              xml.Field(:Name => field_name) { xml.Value value }
-            end
-          }
-        }
-      end
-      return_xml = builder.doc.root.to_xml
-      puts "entity hash to xml is #{return_xml}\n\n"
       return_xml
     end
 
