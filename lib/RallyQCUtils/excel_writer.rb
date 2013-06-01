@@ -1,6 +1,7 @@
+require "win32ole"
+
 module RallyQCUtils
-    require "win32ole"
-    
+
   class ExcelWriter
     
       attr_reader :file_name, :current_row
@@ -17,9 +18,9 @@ module RallyQCUtils
         end
       end
     
-      def write_header_row(row_data)
-        write_row(1, row_data)
-      end
+      #def write_header_row(row_data)
+      #  write_row(1, row_data)
+      #end
     
       def add_row(sheetname, row_data)
         @current_row[sheetname] += 1

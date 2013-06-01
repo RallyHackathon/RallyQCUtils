@@ -13,9 +13,19 @@ module RallyQCUtils
           @config = RallyQCUtils.load_config(config_name)
         when "--generate"
           @spreadsheet_name = args[1]
-          @location         = args[2]
+          config_name       = args[2]    #todo check file exists?
+          @config = RallyQCUtils.load_config(config_name)
+          @location         = args[3]
       end
 
+    end
+    def create_python_dict(data)
+        data_str = data.to_s
+        data_str.gsub!(":name","\"name\"")
+        data_str.gsub!("=>",":")
+        data_str.gsub!(":id","\"id\"")
+        data_str.gsub!(":projects","\"projects\"")
+        data_str
     end
 
     def run
@@ -33,38 +43,67 @@ module RallyQCUtils
           domains = hpqc.gather_qc_info
           fields = Set.new()
           project_array = []
+          field_data = []
           qc_data = []
           domains.each do |domain|
             domain_name = domain[:name]
             domain[:projects].each do |project|
-              project_array.push([domain_name,project[:name]])
+              qc_data.push([domain_name,project[:name]])
               project[:fields].each do |field|
-                fields.add(field[:name])
-              end
-              field_array = fields.to_a
-              project_array.each do |project|
-                  row = project.concat(field_array)
-                  qc_data.push(row)
+                fields.add(field[:name].to_s)
               end
             end
           end
+          field_data = fields.to_a
           #connect to rally and get workspaces and projects
           rally = RallyQCUtils::RallyConnection.new(get_rally_info(@config))
           rally_data = rally.gather_config_info
           # data sheet is just the first row of the qc_data replacing the first
           # two cells
-          data_data = ["QC Domain","Project","Rally Workspace", "Rally Workspace ID","Rally Project", "Rally Project ID"].concat(qc_data[0].slice(2,qc_data[0].size))
+
+          data_data = ["QC Domain","Project","Rally Workspace", "Rally Workspace ID","Rally Project", "Rally Project ID"].concat(field_data)
           #write data to spreadsheet
-          spawn("python","excel_writer.py","\"" + str(rally_data) + "\"",
-            "\"" + str(hpqc_data) + "\"", + "\"" + str(data_data) + "\"")
+          rally_dict = create_python_dict(rally_data)
+          system("python","../lib/RallyQCUtils/excel_writer.py","../hpqc_template",  "'" + rally_dict + "'" ,"'" + qc_data.to_s + "'", "'" + data_data.to_s + "'")
         when "--generate"
-          #read spreadsheet and generate sample configs
+          read_csv_and_write_configs
       end
 
     end
 
+    def read_csv_and_write_configs
+      #read spreadsheet and generate sample configs
+      csv_name = @spreadsheet_name + "-csv"
+      system("python","../lib/RallyQCUtils/excel_reader.py","\"#{@spreadsheet_name}\"","\"../#{csv_name}\"")
+      csv = RallyQCUtils::ExcelCsvReader.new("../#{csv_name}")
+      configs = csv.gather_info
+      #add rally and qc info
+      config_writer = RallyQCUtils::ConfigWriter.new
+      configs.each do |config|
+        add_rally_to_config(config[:rally])
+        add_qc_to_config(config[:qc])
+        file_name = "#{config[:qc]['Domain']}_#{config[:qc]['Project']}_#{config[:qc]['ArtifactType']}.xml"
+        file_with_path = @location + "/" + file_name
+        config_writer.write_config_file(file_with_path, config)
+      end
+    end
+
+    def add_rally_to_config(config)
+      config['Url']             = @config["RallyConnection"]["Url"]
+      config['User']            = @config["RallyConnection"]["User"]
+      config['Password']        = @config["RallyConnection"]["Password"]
+      config['ArtifactType']    = @config["RallyConnection"]["ArtifactType"]
+      config['ExternalIDField'] = @config["RallyConnection"]["ExternalFieldID"]
+    end
+
+    def add_qc_to_config(config)
+      config['Url']             = @config["QCConnection"]["Url"]
+      config['User']            = @config["QCConnection"]["User"]
+      config['Password']        = @config["QCConnection"]["Password"]
+      config['ArtifactType']    = @config["QCConnection"]["ArtifactType"]
+    end
+
     def get_rally_info(config_hash)
-      puts config_hash
       rally_config = {}
       rally_config[:base_url]      = config_hash["RallyConnection"]["Url"]
       rally_config[:username]      = config_hash["RallyConnection"]["User"]
