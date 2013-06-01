@@ -48,15 +48,15 @@ module RallyQCUtils
               end
             end
           end
-          excel_writer = RallyQCUtils::ExcelWriter.new(@spreadsheet_name)
-          #write qc data to spreadsheet
-          excel_writer.write("HPQC", qc_data)
           #connect to rally and get workspaces and projects
           rally = RallyQCUtils::RallyConnection.new(get_rally_info(@config))
           rally_data = rally.gather_config_info
-          #write rally data to spreadsheet
-          excel_writer.write("Rally", rally_data)
-          excel_writer.close_file
+          # data sheet is just the first row of the qc_data replacing the first
+          # two cells
+          data_data = ["project","domain"].concat(qc_data[0].slice(2,qc_data[0].size))
+          #write data to spreadsheet
+          spawn("python","excel_writer.py","\"" + str(rally_data) + "\"",
+            "\"" + str(hpqc_data) + "\"", + "\"" + str(data_data) + "\"")
         when "--generate"
           #read spreadsheet and generate sample configs
       end
