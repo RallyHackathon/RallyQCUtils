@@ -45,10 +45,12 @@ config.xml should be a base config for the connector with a RallyConnection and 
 The Url, User and Passwords will be copied from that base config to the generated configs.
 
 To create a template spreadsheet:
-rallyqc --create spreadsheetname config.xml
+
+    rallyqc --create spreadsheetname config.xml
 
 To generate config files from a spreadsheet and writing to a "location" directory:
-rallyqc --generate spreadsheet config.xml location
+
+    rallyqc --generate spreadsheet config.xml location
 
 A temporary csv file is generated.
 
@@ -56,26 +58,26 @@ The results are in the form <HPQC_Domain>_<HPQC_Project>_<ArtifactType>.xml
 
 ## Sample config.xml for creating the template
 
-<?xml version="1.0"?>
-<Config>
-  <RallyConnection>
-    <Url>rally1.rallydev.com</Url>
-    <User>rallyuser@company.com</User>
-    <Password>rallypass</Password>
-    <ArtifactType>Story</ArtifactType>
-    <ExternalIDField>QCID</ExternalIDField>
-  </RallyConnection>
+    <?xml version="1.0"?>
+    <Config>
+      <RallyConnection>
+        <Url>rally1.rallydev.com</Url>
+        <User>rallyuser@company.com</User>
+        <Password>rallypass</Password>
+        <ArtifactType>Story</ArtifactType>
+        <ExternalIDField>QCID</ExternalIDField>
+      </RallyConnection>
 
-  <QCConnection>
-    <Url>qcserver:8080</Url>
-    <User>qcuser</User>
-    <Password>qc-password</Password>
-    <ArtifactType>REQ</ArtifactType>
-    <IDField>RQ_REQ_ID</IDField>
-    <ExternalIDField>RQ_USER_01</ExternalIDField>
-    <ExternalEndUserIDField>RQ_USER_02</ExternalEndUserIDField>
-  </QCConnection>
-</Config>
+      <QCConnection>
+        <Url>qcserver:8080</Url>
+        <User>qcuser</User>
+        <Password>qc-password</Password>
+        <ArtifactType>REQ</ArtifactType>
+        <IDField>RQ_REQ_ID</IDField>
+        <ExternalIDField>RQ_USER_01</ExternalIDField>
+        <ExternalEndUserIDField>RQ_USER_02</ExternalEndUserIDField>
+      </QCConnection>
+    </Config>
 
 
 ## Contributing
