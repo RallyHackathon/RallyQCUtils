@@ -52,14 +52,12 @@ module RallyQCUtils
 def write(sheetname, data)
   case sheetname
     when "Rally"
-      puts "in rally write, adding header row"
       add_row("Rally",["workspace name", "workspace id", "project name", "project id"])
       data.each do |values|
         workspace_name = values[:name]
         workspace_id = values[:id]
         begin
         values[:projects].each do |project|
-          puts "write row"
           add_row("Rally",["#{workspace_name}","#{workspace_id}","#{project[:name]}","#{project[:id]}"])
         end
         rescue Exception => ex
@@ -67,8 +65,10 @@ def write(sheetname, data)
         end
       end
     when "QC"
+      header_data = ["domain","project"].concat(data[0].slice(2..data.size))
+      add_row("HPQC",header_data)
       data.each do |values|
-        puts values
+        add_row("HPQC",[values[0], values[1]])
       end
   end
 end
