@@ -48,6 +48,9 @@ rallyqc --create spreadsheetname config.xml
 To generate config files from a spreadsheet and writing to a "location" directory:
 rallyqc --generate spreadsheet config.xml location
 
+A temporary csv file is generated.
+
+The results are in the form <HPQC_Domain>_<HPQC_Project>_<ArtifactType>.xml
 
 ## Sample config.xml for creating the template
 
