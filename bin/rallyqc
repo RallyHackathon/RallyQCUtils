@@ -7,16 +7,8 @@ require "rally_qc_utils"
 
 begin
   util = nil
-  benchmark = Benchmark.measure do
-    util = :RallyQCUtils::RallyQCUtil.new(ARGV)
-    util.run  #if util.ready_to_run
-  end.real
-  util.logger.info "service run took #{benchmark} seconds" if util && util.logger
+  util = RallyQCUtils::RallyQCUtil.new(ARGV)
+  util.run  #if util.ready_to_run
 rescue Exception => ex
-  exit if ex.is_a?(SystemExit)
-  msg = "There was an error running the utility #{ex.class}.\n"
-  msg << "Message was #{ex.message}\n"
-  msg << "#{ex.backtrace.join("\n  ")}\n"
-  util.logger.error msg if util && util.logger
-  puts msg
+  puts ex
 end

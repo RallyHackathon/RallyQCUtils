@@ -7,11 +7,11 @@ module RallyQCUtils
     def initialize(args)
       @operation        = args[0]
       case @operation
-        when "create"
+        when "--create"
           @spreadsheet_name = args[1]
           config_name       = args[2]    #todo check file exists?
           @config = RallyQCUtils.load_config(config_name)
-        when "generate"
+        when "--generate"
           @spreadsheet_name = args[1]
           @location         = args[2]
       end
@@ -20,7 +20,7 @@ module RallyQCUtils
 
     def run
       case @operation
-        when "create"
+        when "--create"
           #connect to rally and get workspaces and projects
           rally = RallyQCUtils::RallyConnection.new(get_rally_info(@config))
           rally_data = rally.gather_config_info
@@ -29,13 +29,14 @@ module RallyQCUtils
           excel_writer.write("Rally", rally_data)
           #connect to qc and get domain project and field info
           #write qc data to spreadsheet
-        when "generate"
+        when "--generate"
           #read spreadsheet and generate sample configs
       end
 
     end
 
     def get_rally_info(config_hash)
+      puts config_hash
       rally_config = {}
       rally_config[:base_url]      = config_hash["RallyConnection"]["Url"]
       rally_config[:username]      = config_hash["RallyConnection"]["User"]
