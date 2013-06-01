@@ -3,19 +3,21 @@
 RallyQCUtils is a utility meant to help you setup the RallyQC Connector when you have many QC Domains and Projects
 
 It can create a template spreadsheet for you to generate configuration files from.
-The generated spreadsheet will contain 3 tabs.
-1. A Rally Tab with a list of Rally Workspaces, Workspace IDs, Projects, and Project IDs.
-2. A QC Tab with a list of QC Domains and their corresponding Projects
-3. A Data tab where you can paste in your QC Domain Project List and map the corresponding Rally Workspace / Project
-   Columns further to the right can map the Rally Field to the intended QC Field listed in the header.
+The generated spreadsheet will contain 3 tabs:
+
+1.  A Rally Tab with a list of Rally Workspaces, Workspace IDs, Projects, and Project IDs.
+2.  A QC Tab with a list of QC Domains and their corresponding Projects
+3.  A Data tab where you can paste in your QC Domain Project List and map the corresponding Rally Workspace / Project
+    Columns further to the right can map the Rally Field to the intended QC Field listed in the header.
 
 The generate command will read the template spreadsheet and create configuration files in a specified location.
 The generated configs will be named QCDomain_QCProject_Type.xml.  Ex.  DEFAULT_Project1_REQ.xml
 
-An example spreadsheet would look roughly like
-QC Domain, Project, Rally Workspace, Rally Workspace ID, Rally Project,Rally Project ID,RQ_REQ_COMMENT,RQ_REQ_STATUS,RQ_REQ_NAME,RQ_USER_01,RQ_USER_02
-AUTOMATED_TESTS, DynamicTests, Quality Center Workspace, Project 1, Description, ScheduleState, Name, ObjectID, FormattedID
-AUTOMATED_TESTS, LoadTests, Quality Center Workspace, Project 2, Description, ScheduleState, Name, ObjectID, FormattedID
+An example spreadsheet would look roughly like:
+
+    QC Domain, Project, Rally Workspace, Rally Workspace ID, Rally Project,Rally Project ID,RQ_REQ_COMMENT,RQ_REQ_STATUS,RQ_REQ_NAME,RQ_USER_01,RQ_USER_02
+    AUTOMATED_TESTS, DynamicTests, Quality Center Workspace, Project 1, Description, ScheduleState, Name, ObjectID, FormattedID
+    AUTOMATED_TESTS, LoadTests, Quality Center Workspace, Project 2, Description, ScheduleState, Name, ObjectID, FormattedID
 
 
 System Requirements:
