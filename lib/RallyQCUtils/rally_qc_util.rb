@@ -64,7 +64,8 @@ module RallyQCUtils
           data_data = ["QC Domain","Project","Rally Workspace", "Rally Workspace ID","Rally Project", "Rally Project ID"].concat(field_data)
           #write data to spreadsheet
           rally_dict = create_python_dict(rally_data)
-          system("python","../lib/RallyQCUtils/excel_writer.py","../hpqc_template",  "'" + rally_dict + "'" ,"'" + qc_data.to_s + "'", "'" + data_data.to_s + "'")
+          script_name = "#{File.dirname(__FILE__)}/excel_writer.py"
+          system("python",script_name,"hpqc_template",  "'" + rally_dict + "'" ,"'" + qc_data.to_s + "'", "'" + data_data.to_s + "'")
         when "--generate"
           read_csv_and_write_configs
       end
@@ -74,8 +75,9 @@ module RallyQCUtils
     def read_csv_and_write_configs
       #read spreadsheet and generate sample configs
       csv_name = @spreadsheet_name + "-csv"
-      system("python","../lib/RallyQCUtils/excel_reader.py","\"#{@spreadsheet_name}\"","\"../#{csv_name}\"")
-      csv = RallyQCUtils::ExcelCsvReader.new("../#{csv_name}")
+      script_name = "#{File.dirname(__FILE__)}/excel_reader.py"
+      system("python",script_name,"\"#{@spreadsheet_name}\"","\"#{csv_name}\"")
+      csv = RallyQCUtils::ExcelCsvReader.new("#{csv_name}")
       configs = csv.gather_info
       #add rally and qc info
       config_writer = RallyQCUtils::ConfigWriter.new

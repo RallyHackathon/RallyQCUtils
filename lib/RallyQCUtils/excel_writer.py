@@ -15,7 +15,7 @@ class ExcelWriter(object):
     
     def write_row(self, sheetname, row_num, row_data):
         col_count = -1
-        print ("row_data=" + str(row_data))
+        #print ("row_data=" + str(row_data))
         for cellval in row_data:
             col_count += 1
             if sheetname == "Data":
@@ -28,16 +28,16 @@ class ExcelWriter(object):
     def close_file(self):
         cwd = os.getcwd()
         self.book.save(cwd + "/" + self.file_name)
-        print("save book as " + self.file_name + "\n")
+        #print("save book as " + self.file_name + "\n")
         self.book.save(self.file_name)
-        print (str(self.book))
+        #print (str(self.book))
     
     def write(self,sheetname, data):
         if sheetname == "Rally":
             self.add_row("Rally",["workspace name", "workspace id", "project name", "project id"])
-            print "first list item=" + str(data[0])
+            #print "first list item=" + str(data[0])
             for values in data:
-                print values
+                #print values
                 workspace_name = values["name"]
                 workspace_id = values["id"]
                 for project in values["projects"]:
@@ -65,7 +65,7 @@ def main():
     rally_data = eval(eval(sys.argv[2]))
     hpqc_data= eval(eval(sys.argv[3]))
     data_data = eval(eval(sys.argv[4]))
-    print ("length of data data = " + str(len(data_data)))
+    #print ("length of data data = " + str(len(data_data)))
     excel = ExcelWriter(filename)
     excel.write("Rally",rally_data)
     excel.write("HPQC",hpqc_data)

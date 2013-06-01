@@ -4,7 +4,7 @@ def main():
    workbook_name = eval(sys.argv[1])
    sheet_name = eval(sys.argv[2])
    f = open(sheet_name + ".csv","w")
-   workbook = xlrd.open_workbook("../" + workbook_name+".xlsx")
+   workbook = xlrd.open_workbook(workbook_name+".xlsx")
    sheet = workbook.sheet_by_name("Data")
    num_rows = sheet.nrows - 1
    num_cells = sheet.ncols - 1
