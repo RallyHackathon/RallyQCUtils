@@ -35,8 +35,13 @@ class ExcelWriter(object):
                 for project in values["projects"]:
                     self.add_row("Rally",[workspace_name,workspace_id,project["name"],project["id"]])
         elif sheetname== "HPQC":
+            # write header row
+            header_row = ["domain","project"]
+            self.add_row(header_row)
             for values in data:
-                self.add_row("HPQC",values)
+                self.add_row("HPQC",values[0:2])
+        elif sheetname == "Data":
+            self.add_row("Data",data)
     
     def create_file(self):
         self.book = xlwt.Workbook()
@@ -46,10 +51,12 @@ class ExcelWriter(object):
             
     def write_cell(self,sheet, location, value):
         sheet.write(location["row"],location["column"], value)
+        
 def main():
     filename = sys.argv[1]
     rally_data = eval(sys.argv[2])
     hpqc_data= eval(sys.argv[3])
+    data_data = eval(sys.argv[4])
     excel = ExcelWriter(filename)
     excel.write("Rally",rally_data)
     excel.write("HPQC",hpqc_data)
